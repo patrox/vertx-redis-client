@@ -3498,6 +3498,23 @@ public interface RedisAPI {
     return send(Command.ZSCORE, arg0, arg1);
   }
   /**
+   * Redis command <a href="https://redis.io/commands/zunion">zunion</a>.
+   * @return fluent self
+   */
+  @Fluent
+  default RedisAPI zunion(List<String> args, Handler<AsyncResult<@Nullable Response>> handler) {
+    send(Command.ZUNION, args.toArray(new String[0])).onComplete(handler);
+    return this;
+  }
+
+  /**
+   * Redis command <a href="https://redis.io/commands/zunion">zunion</a>.
+   * @return Future response.
+   */
+  default Future<@Nullable Response> zunion(List<String> args) {
+    return send(Command.ZUNION, args.toArray(new String[0]));
+  }
+  /**
    * Redis command <a href="https://redis.io/commands/zunionstore">zunionstore</a>.
    * @return fluent self
    */
