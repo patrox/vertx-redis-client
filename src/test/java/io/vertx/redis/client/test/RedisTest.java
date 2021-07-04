@@ -250,6 +250,34 @@ public class RedisTest {
   }
 
   @Test
+  public void testZUnion(TestContext should) {
+    final Async test = should.async();
+
+    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+      .connect(create -> {
+        should.assertTrue(create.succeeded(), "Couldn't connect to redis server");
+
+        final RedisConnection redis = create.result();
+        RedisAPI api = RedisAPI.api(redis);
+
+        api.zadd(Arrays.asList("zset1", "1", "one", "2", "two"), zadd1 -> {
+          should.assertTrue(zadd1.succeeded());
+
+          api.zadd(Arrays.asList("zset2", "1", "one", "2", "two", "3", "three"), zadd2 -> {
+            should.assertTrue(zadd2.succeeded());
+
+            api.zunion(Arrays.asList("2", "zset1", "zset2"), zunion -> {
+              should.assertTrue(zunion.succeeded());
+
+              System.out.println(zunion);
+              test.complete();
+            });
+          });
+        });
+      });
+  }
+
+  @Test
   public void buggyHmget(TestContext should) {
     final Async test = should.async();
 
