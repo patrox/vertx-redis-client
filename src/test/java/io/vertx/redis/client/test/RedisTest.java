@@ -30,7 +30,7 @@ public class RedisTest {
   public void simpleTest(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -54,7 +54,7 @@ public class RedisTest {
   public void emptyStringTest(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -76,7 +76,7 @@ public class RedisTest {
   public void simpleSelectTest(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), new RedisOptions().addConnectionString("redis://localhost:6379/0"))
+    Redis.createClient(rule.vertx(), new RedisOptions().addConnectionString("redis://localhost:7006/0"))
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -100,7 +100,7 @@ public class RedisTest {
   public void batchTest(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -122,7 +122,7 @@ public class RedisTest {
   public void batchEmptyTest(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -139,7 +139,7 @@ public class RedisTest {
   public void simpleTestAPI(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -162,7 +162,7 @@ public class RedisTest {
     final Async test = should.async();
     final Vertx vertx = rule.vertx();
 
-    Redis.createClient(vertx, "redis://localhost:6379")
+    Redis.createClient(vertx, "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -194,7 +194,7 @@ public class RedisTest {
 
     RedisOptions options = new RedisOptions()
       .setMaxWaitingHandlers(10)
-      .addConnectionString("redis://localhost:6379");
+      .addConnectionString("redis://localhost:7006");
 
     Redis.createClient(rule.vertx(), options)
       .connect(create -> {
@@ -231,7 +231,7 @@ public class RedisTest {
   public void testZAdd(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -253,7 +253,7 @@ public class RedisTest {
   public void testZUnion(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded(), "Couldn't connect to redis server");
 
@@ -270,7 +270,15 @@ public class RedisTest {
               should.assertTrue(zunion.succeeded());
 
               System.out.println(zunion);
-              test.complete();
+//              Future{result=[one, three, two]}
+              
+              api.zunion(Arrays.asList("2", "zset1", "zset2", "WITHSCORES"), zunionWithScores -> {
+                should.assertTrue(zunionWithScores.succeeded());
+
+                System.out.println(zunionWithScores);
+//                Future{result=[[one, 2.0], [three, 3.0], [two, 4.0]]}
+                test.complete();
+              });
             });
           });
         });
@@ -281,7 +289,7 @@ public class RedisTest {
   public void buggyHmget(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
@@ -298,7 +306,7 @@ public class RedisTest {
   public void buggyIterator(TestContext should) {
     final Async test = should.async();
 
-    Redis.createClient(rule.vertx(), "redis://localhost:6379")
+    Redis.createClient(rule.vertx(), "redis://localhost:7006")
       .connect(create -> {
         should.assertTrue(create.succeeded());
 
