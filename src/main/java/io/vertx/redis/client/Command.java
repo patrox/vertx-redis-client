@@ -230,6 +230,7 @@ public interface Command {
   Command ZREVRANK = Command.create("zrevrank", 3, 1, 1, 1, false, true, false, false);
   Command ZSCAN = Command.create("zscan", -3, 1, 1, 1, false, true, false, false);
   Command ZSCORE = Command.create("zscore", 3, 1, 1, 1, false, true, false, false);
+  Command ZUNION = Command.create("zunion", -3, 0, 0, 0, false, true, true, false);
   Command ZUNIONSTORE = Command.create("zunionstore", -4, 0, 0, 0, true, false, true, false);
   Command SENTINEL = Command.create("sentinel");
 
